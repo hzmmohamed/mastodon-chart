@@ -1,0 +1,71 @@
+replicaCount: 2
+image:
+  tag: "v4.0.2"
+  pullPolicy: IfNotPresent
+mastodon:
+  createAdmin:
+    enabled: true
+    username: hzmfahmi
+    email: hzmmohamed@gmail.com
+  local_domain: example.com
+  s3:
+    enabled: false
+  #   existingSecret: "mastodon-server-secret"
+  #   bucket: "your-bucket-name"
+  #   endpoint: https://storage.googleapis.com
+  #   hostname: storage.googleapis.com
+  #   region: "EU"
+  # secrets:
+  #   existingSecret: "mastodon-server-secret"
+  smtp:
+    auth_method: plain
+    ca_file: /etc/ssl/certs/ca-certificates.crt
+    delivery_method: smtp
+    domain: 
+    enable_starttls: "auto"
+    from_address: hzmmohamed@gmail.com
+    openssl_verify_mode: peer
+    port: 587
+    reply_to: hzmmohamed@gmail.com
+    server: smtp.gmail.com
+    tls: true
+    login: hzmmohamed@gmail.com
+    existingSecret: mastodon-server-secret
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.org/client-max-body-size: 40m
+  ingressClassName:
+  hosts:
+    - host: mastodon.egfedi.online
+      paths:
+        - path: "/"
+  tls:
+    - secretName: mastodon-tls
+      hosts:
+        - mastodon.egfedi.online
+elasticsearch:
+  master:
+    masterOnly: false
+    replicaCount: 1
+  data:
+    replicaCount: 0
+  coordinating:
+    replicaCount: 0
+  ingest:
+    replicaCount: 0
+postgresql:
+  enabled: true
+  postgresqlHostname: your-psql
+  postgresqlPort: 5432
+  auth:
+    database: mastodon
+    username: mastodon
+    existingSecret: "mastodon-postgres-secret"
+redis:
+  architecture: "standalone"
+  auth:
+    existingSecret: "mastodon-server-secret"
+resources: {}
