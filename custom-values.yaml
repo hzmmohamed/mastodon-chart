@@ -3,6 +3,8 @@ image:
   tag: "v4.0.2"
   pullPolicy: IfNotPresent
 mastodon:
+  secrets:
+    existingSecret: "mastodon-server-secret"
   createAdmin:
     enabled: true
     username: hzmfahmi
