@@ -10,6 +10,20 @@ mastodon:
     username: hzmfahmi
     email: hzmmohamed@gmail.com
   local_domain: example.com
+  persistence:
+    assets:
+      # -- ReadWriteOnce is more widely supported than ReadWriteMany, but limits
+      # scalability, since it requires the Rails and Sidekiq pods to run on the
+      # same node.
+      accessMode: ReadWriteOnce
+      resources:
+        requests:
+          storage: 3Gi
+    system:
+      accessMode: ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
   s3:
     enabled: false
   #   existingSecret: "mastodon-server-secret"
